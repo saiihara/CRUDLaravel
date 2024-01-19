@@ -1,0 +1,200 @@
+/* styles.css */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+nav {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+h1 {
+  color: #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ccc;
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+}
+
+thead {
+  background-color: #333;
+  color: white;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #e6e6e6;
+}
+
+.alert {
+  padding: 15px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+form {
+  margin-top: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input, select {
+  margin-bottom: 10px;
+  padding: 8px;
+  width: 100%;
+}
+
+button {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+.edit-link {
+  color: #333;
+  text-decoration: none;
+}
+
+.edit-link:hover {
+  text-decoration: underline;
+}
+
+.edit-link:focus {
+  outline: none;
+}
+
+.actions {
+  display: flex;
+}
+
+.actions button {
+  margin-right: 10px;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.div-insertar, .div-edit{
+  width:30%;
+  background-color: #ccc;
+  margin: 0 auto;
+
+  padding:20px;
+
+  /* display:flex;
+  flex-direction: column;
+  justify-items: center; */
+}
+
+.div-insertar input[type="text"],
+.div-insertar input[type="number"],
+.div-insertar input[type="date"],
+.div-edit input[type="text"],
+.div-edit input[type="number"],
+.div-edit input[type="date"] {
+    width: 96%;
+}
+
+.texto-insertar{
+  text-align: center;
+}
+
+.boton{
+  background-color: #333;
+  color:white;
+  width:100%;
+  cursor: pointer;
+}
+
+
+.editar{
+  text-decoration: none;
+  margin-right:50%;
+}
+
+.busqueda{
+  width:30%;
+}
+
+
+.menu-section {
+  background-color: #333;
+  overflow: hidden;
+}
+
+.menu-item {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.menu-item:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+h2 {
+  margin-left: 30px;
+}
+
+p {
+  margin-left: 30px;
+}
+
+.company-image {
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+  background-position: center center;
+  background-size: cover;
+  margin: 0 auto;
+  width: 50%;
+  height: 60vh;
+  
+}
