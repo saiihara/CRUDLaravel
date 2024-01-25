@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 use App\Models\Phone;
 use App\Models\Tienda;
+use App\Models\Log as LogModel;
 
 class PhoneController extends Controller{
 
@@ -78,19 +79,25 @@ class PhoneController extends Controller{
      * @param  Request  $request Datos del formulario de inserción.
      * @return route Redirige a la lista de móviles después de la inserción.
      */
+    public function almacenar(Request $request)
+    {
+        Phone::create([
+            'modelo' => $request->input('model'),
+            'tienda_id' => $request->input('tienda_id'),
+            'lanzamiento' => $request->input('launch'),
+            'pantalla' => $request->input('screen'),
+            'precio' => $request->input('price'),
+        ]);
 
-     public function almacenar(Request $request)
-     {
-         Phone::create([
-             'modelo' => $request->input('model'),
-             'tienda_id' => $request->input('tienda_id'),
-             'lanzamiento' => $request->input('launch'),
-             'pantalla' => $request->input('screen'),
-             'precio' => $request->input('price'),
-         ]);
-     
-         return redirect()->route('phones');
-     }
+        // Registro en el log
+        LogModel::create([
+            'accion' => 'almacenar',
+            'tabla_afectada' => 'phones',
+            'detalle' => 'Se ha almacenado un nuevo móvil',
+        ]);
+
+        return redirect()->route('phones');
+    }
 
 
       /////////////////////
@@ -125,21 +132,27 @@ class PhoneController extends Controller{
      * @return route Redirige a la lista de teléfonos después de la actualización.
      */
 
-    public function actualizar(Request $request, $id){
-       //id de la url
-    $telefono = DB::table('phones')->where('id', $id)->first();
-
-    // Actualizar el móvil con tienda en la base de datos
-    DB::table('phones')->where('id', $id)->update([
-        'modelo' => $request->input('model'),
-        'tienda_id' => $request->input('tienda_id'), 
-        'lanzamiento' => $request->input('launch'),
-        'pantalla' => $request->input('screen'),
-        'precio' => $request->input('price'),
-    ]);
-
-        return redirect()->route('phones');
-    }
+     public function actualizar(Request $request, $id)
+     {
+         $telefono = Phone::findOrFail($id);
+ 
+         $telefono->update([
+             'modelo' => $request->input('model'),
+             'tienda_id' => $request->input('tienda_id'),
+             'lanzamiento' => $request->input('launch'),
+             'pantalla' => $request->input('screen'),
+             'precio' => $request->input('price'),
+         ]);
+ 
+         // Registro en el log
+         LogModel::create([
+             'accion' => 'actualizar',
+             'tabla_afectada' => 'phones',
+             'detalle' => 'Se ha actualizado el móvil con ID ' . $id,
+         ]);
+ 
+         return redirect()->route('phones');
+     }
 
         // $logData = [
         //     'action' => 'actualizar',
@@ -163,90 +176,27 @@ class PhoneController extends Controller{
      * @return route Redirige a la lista de teléfonos después de la eliminación.
      */
 
-    public function eliminar($id)
-    {
-        $telefono = DB::table('phones')->where('id', $id)->first();
-        //first devuelve el primer resultado de la consulta
-
-        DB::table('phones')->where('id', $id)->delete();
-
-        // $logData = [
-        //     'action' => 'eliminar',
-        //     'phone_id' => $id,
-        //     'deleted_data' => $telefono,
-        // ];
-
-        // $this->addToLog($logData);
-
-        return redirect()->route('phones');
-    }
+     public function eliminar($id)
+     {
+         $telefono = Phone::findOrFail($id);
+ 
+         $telefono->delete();
+ 
+         // Registro en el log
+         LogModel::create([
+             'accion' => 'eliminar',
+             'tabla_afectada' => 'phones',
+             'detalle' => 'Se ha eliminado el móvil con ID ' . $id,
+         ]);
+ 
+         return redirect()->route('phones');
+     }
 
 
 
 
 
 
-
-      /////////////////////
-    // LOG FUNCIONES ///////
-    ///////////////////
-
-    //AÑADIR AL LOG
-//     private function addToLog($logData)
-//     {
-//          //Obtener el array de logs desde la sesión o un array vacío si no existe
-
-//         $logs = Session::get('log_messages', []);
-    
-//         //Definir mensajes de acción para cada tipo de operación
-
-//         $actionMessages = [
-
-//             'almacenar' => $this->getLogMessage('Se guardó', $logData, 'phone_data'),
-//             'actualizar' => $this->getLogMessage('Se actualizó', $logData, 'updated_data'),
-//             'eliminar' => $this->getLogMessage('Se eliminó', $logData, 'deleted_data'),
-//         ];
-    
-//         //Verificar si logData es un array y contiene la clave dataKey con un modelo
-//         if (is_array($logData)) {
-//             $action = isset($logData['action']) ? $logData['action'] : null;
-//         } else {
-            
-//             $action = is_object($logData) ? (property_exists($logData, 'action') ? $logData->action : null) : null;
-//         }
-    
-//         //Obtener el mensaje personalizado para la acción actual
-//         $customMessage = isset($actionMessages[$action]) ? $actionMessages[$action] : null;
-    
-//         // Agregar el mensaje al array de logs si existe
-//         if ($customMessage) {
-//             $logs[] = $customMessage;
-//             Session::put('log_messages', $logs);
-//         }
-//     }
-    
-//     //Función para construir el mensaje del log
-//     private function getLogMessage($actionText, $logData, $dataKey)
-// {
-//     $modelValue = '';
-
-//      // Verificar si logData es un array y contiene la clave dataKey con un modelo
-
-//     if (is_array($logData) && isset($logData[$dataKey]) && is_array($logData[$dataKey]) && isset($logData[$dataKey]['model'])) {
-//         //Si logData es un array y tiene la clave dataKey y model, construir el mensaje
-//         $modelValue = $logData[$dataKey]['model'];
-//     } elseif (is_object($logData) && property_exists($logData, $dataKey) && is_object($logData->$dataKey) && property_exists($logData->$dataKey, 'model')) {
-//         //Si logData es un objeto y tiene la propiedad dataKey y model, construir el mensaje
-//         $modelValue = $logData->$dataKey->model;
-//     }
-
-//     // Construir el mensaje final
-//     if ($modelValue) {
-//         return $actionText.' el móvil "'.$modelValue.'" en la base de datos';
-//     } else {
-//         return 'Error al registrar el log de '.$actionText;
-//     }
-// }
 
     
     

@@ -19,9 +19,12 @@
       <a href="{{ route('tiendas.crear') }}" class="menu-item">Añadir Tienda</a>
       <a href='{{ route("phones") }}' class="menu-item">Ver móviles</a>
       <a href='{{ route("tiendas.index") }}' class="menu-item">Tiendas</a>
+      <a href="{{ route('login') }}"><i class="fa-solid fa-user" style="color: white"></i></a>
     </section>
 
     <h2>Inicio</h2>
+
+    <h1>Hello, {{ $name }}</h1>
 
     <p>CRUD básico para una compañía que distribuye móviles y tiendas</p>
 

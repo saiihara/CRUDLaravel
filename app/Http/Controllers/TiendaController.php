@@ -4,9 +4,35 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tienda;
+use App\Http\Controllers\LogController;
+
+use App\Models\Log;
 
 class TiendaController extends Controller
 {
+
+  /**
+     * Instancia la clase Log 
+     *
+     * 
+     */
+
+    private $logController;
+
+    public function __construct(LogController $logController)
+    {
+        $this->logController = $logController;
+    }
+
+    public function actualizarLog(Request $request, $id)
+    {
+        // Tu lógica de actualización...
+
+        // Registrar en el log
+        $this->logController->store('actualizar', 'tiendas');
+
+        return redirect()->route('tiendas.index');
+    }
 
     /**
      * Muestra la lista de todas las tiendas.
@@ -77,21 +103,33 @@ class TiendaController extends Controller
      */
     public function actualizar(Request $request, $id)
     {
+        // Validar los datos del formulario
         $request->validate([
             'nombre' => 'required',
             'localizacion' => 'required',
             'cid' => 'required',
             'numero_trabajadores' => 'required|integer',
         ]);
-
+    
+        // Encontrar la tienda por su ID
         $tienda = Tienda::findOrFail($id); 
+    
+        // Guardar los datos actualizados de la tienda
         $tienda->update([
             'nombre' => $request->input('nombre'),
             'localizacion' => $request->input('localizacion'),
             'cid' => $request->input('cid'),
             'numero_trabajadores' => $request->input('numero_trabajadores'),
         ]);
-
+    
+        // Crear un registro de log
+        Log::create([
+            'accion' => 'actualizar',
+            'tabla_afectada' => 'tiendas',
+            'detalle' => 'Se ha actualizado la tienda ' . $tienda->nombre . ' (' . $tienda->id . ')',
+        ]);
+    
+        // Redirigir a la página de índice de tiendas
         return redirect()->route('tiendas.index');
     }
 
@@ -114,24 +152,31 @@ class TiendaController extends Controller
      * @return route Redirige a la lista de tiendas después de guardar la nueva tienda
      */
 
-    public function guardar(Request $request)
-    {
-        $request->validate([
-            'nombre' => 'required',
-            'localizacion' => 'required',
-            'cid' => 'required',
-            'numero_trabajadores' => 'required|integer',
-        ]);
-
-        Tienda::create([
-            'nombre' => $request->input('nombre'),
-            'localizacion' => $request->input('localizacion'),
-            'cid' => $request->input('cid'),
-            'numero_trabajadores' => $request->input('numero_trabajadores'),
-        ]);
-
-        return redirect()->route('tiendas.index');
-    }
+     public function guardar(Request $request)
+     {
+         $request->validate([
+             'nombre' => 'required',
+             'localizacion' => 'required',
+             'cid' => 'required',
+             'numero_trabajadores' => 'required|integer',
+         ]);
+ 
+         Tienda::create([
+             'nombre' => $request->input('nombre'),
+             'localizacion' => $request->input('localizacion'),
+             'cid' => $request->input('cid'),
+             'numero_trabajadores' => $request->input('numero_trabajadores'),
+         ]);
+ 
+         // Crear registro en el log
+         Log::create([
+             'accion' => 'crear',
+             'tabla_afectada' => 'tiendas',
+             'detalle' => 'Se ha creado una nueva tienda',
+         ]);
+ 
+         return redirect()->route('tiendas.index');
+     }
 
     /**
      * Elimina una tienda específica de la base de datos.
@@ -139,10 +184,18 @@ class TiendaController extends Controller
      * @param  int $id_tienda
      * @return route Redirige a la lista de tiendas después de eliminar la tienda.
      */
+
     public function eliminar($id)
     {
-        //si la encuentra la borra pasándole el id
         Tienda::findOrFail($id)->delete(); 
+
+        // Crear registro en el log
+        Log::create([
+            'accion' => 'eliminar',
+            'tabla_afectada' => 'tiendas',
+            'detalle' => 'Se ha eliminado la tienda con ID ' . $id,
+        ]);
+
         return redirect()->route('tiendas.index');
     }
 

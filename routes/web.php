@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\TiendaController;
+use App\Http\Controllers\LogController;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +20,7 @@ use App\Http\Controllers\TiendaController;
 Route::get('/editar/{id}', [PhoneController::class, 'editar'])->name('editar');
 Route::put('/actualizar/{id}', [PhoneController::class, 'actualizar'])->name('actualizar');
 
-Route::post('/clear-log', [PhoneController::class, 'clearLog'])->name('clearLog');
+// Route::post('/clear-log', [PhoneController::class, 'clearLog'])->name('clearLog');
 
 Route::delete('/eliminar/{id}', [PhoneController::class, 'eliminar'])->name('eliminar');
 
@@ -45,6 +47,10 @@ Route::get('/crear', [TiendaController::class, 'crear'])->name('tiendas.crear');
 Route::post('/tiendas/guardar', [TiendaController::class, 'guardar'])->name('tiendas.guardar');
 
 
+//LOGS
+Route::get('/logs', [LogController::class, 'index'])->name('log.log');
+
+Route::delete('/logs/{id}', [LogController::class, 'destroy'])->name('logs.destroy');
 
 
 //borrar
@@ -52,3 +58,15 @@ Route::delete('/tiendas/eliminar/{id}', [TiendaController::class, 'eliminar'])->
 
 //ver tienda desde móviles
 Route::get('/tiendas/ver/{id}', [TiendaController::class, 'verTienda'])->name('tiendas.ver');
+
+
+// Login Routes
+// Login Routes
+Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
+
+// Registration Routes
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
+;
+

@@ -26,6 +26,7 @@
       <a href='{{ route("principal") }}'>Inicio</a>
       <a href='{{ route("añadir") }}'>Añadir móvil</a>
       <a href='{{ route("tiendas.index") }}'>Tiendas</a>
+      <a href='{{ route("log.log") }}'>Ver logs</a>
     </nav>
 
     <h2 style="margin-left: 30px;">Móviles</h2>
@@ -75,7 +76,7 @@
             <form action="{{ route('eliminar', $phone->id) }}" method="POST" style="display: inline;">
                 @csrf
                 @method('DELETE')
-                <button class="eliminar" type="submit" onclick="return confirm('¿Estás seguro de que quiere borrarlo?')">Eliminar</button>
+                <button class="eliminar" type="submit" onclick="return confirm('¿Estás seguro de que quiere borrar este log?')">Eliminar</button>
             </form>
         </td>
     </tr>
