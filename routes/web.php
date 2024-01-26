@@ -5,6 +5,9 @@ use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\TiendaController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +19,12 @@ use App\Http\Controllers\Auth\LoginController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+//INICIO
+Route::get('/inicio', function () {
+    return view('inicio');
+})->name('inicio');
+
 
 Route::get('/editar/{id}', [PhoneController::class, 'editar'])->name('editar');
 Route::put('/actualizar/{id}', [PhoneController::class, 'actualizar'])->name('actualizar');
@@ -60,13 +69,22 @@ Route::delete('/tiendas/eliminar/{id}', [TiendaController::class, 'eliminar'])->
 Route::get('/tiendas/ver/{id}', [TiendaController::class, 'verTienda'])->name('tiendas.ver');
 
 
-// Login Routes
-// Login Routes
-Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
+// Login routes
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
 
-// Registration Routes
-Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
-;
+// Logout route
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+// Show registration form
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+
+// Process registration form submission
+Route::post('/register', [RegisterController::class, 'register']);
+
+
+//USERS
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');

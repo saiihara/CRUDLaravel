@@ -1,30 +1,42 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+namespace App\Http\Controllers\Auth;
+
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
+    /**
+     * Show the registration form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
+
+    /**
+     * Handle user registration.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function register(Request $request)
     {
-        // Validar los datos del usuario
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        // Crear un nuevo registro de usuario con rol 'invitado'
+        // Create a new user
         $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
-            'role' => 'invitado', // Establecer el rol por defecto
+            'email' => $request->name, 
+            'email' => $request->email,
+            'password' => Hash::make('password'), 
         ]);
 
-        // Redirigir al usuario a la vista de inicio con un mensaje de éxito
-        return redirect()->route('inicio')->with('name', $user->name)->with('success', 'Registro exitoso');
+        // Redirect to the login screen
+        return redirect()->route('login')->with('success', 'Registration successful! Please log in.');
     }
 }

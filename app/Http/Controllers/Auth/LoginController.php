@@ -2,29 +2,34 @@
 
 namespace App\Http\Controllers\Auth;
 
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
     public function showLoginForm()
-{
-    return view('auth.login');
-}
-
-public function login(Request $request)
-{
-    $credentials = $request->only('name', 'password');
-
-    if (Auth::attempt($credentials)) {
-        // Authentication passed...
-        return redirect()->intended('/dashboard');
+    {
+        return view('auth.login');
     }
 
-    return back()->withErrors(['email' => 'No coincide con nuestros registros'])->withInput($request->only('name'));
-}
+    public function login(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'name' => 'required',
+            'password' => 'required',
+        ]);
 
+        $request->session()->put('name', $request->name);
+
+        return redirect()->route('inicio')->with('message', 'You have been logged in successfully!');
+    }
+
+    public function logout(Request $request)
+    {
+        Session::forget('name');
+
+        return redirect()->route('inicio')->with('message', 'You have been logged out successfully!');
+    }
 }

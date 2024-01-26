@@ -16,5 +16,7 @@
     </form>
 
     <p>No estás registrado? <a href="{{ route('register') }}">Regístrate</a></p>
+    <p>Nota de Sofía: el admin es "admin" "123"</p>
+    <p>Un usuario normal es "Paco" "123" </p>
 </body>
 </html>
