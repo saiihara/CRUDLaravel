@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 
+
 use App\Models\Phone;
 use App\Models\Tienda;
 use App\Models\Log as LogModel;
@@ -93,7 +94,6 @@ class PhoneController extends Controller{
         LogModel::create([
             'accion' => 'almacenar',
             'tabla_afectada' => 'phones',
-            'detalle' => 'Se ha almacenado un nuevo móvil',
         ]);
 
         return redirect()->route('phones');
@@ -148,21 +148,10 @@ class PhoneController extends Controller{
          LogModel::create([
              'accion' => 'actualizar',
              'tabla_afectada' => 'phones',
-             'detalle' => 'Se ha actualizado el móvil con ID ' . $id,
          ]);
  
          return redirect()->route('phones');
      }
-
-        // $logData = [
-        //     'action' => 'actualizar',
-        //     'phone_id' => $id,
-        //     'updated_data' => $request->all(),
-        //     'original_data' => $telefono,
-        // ];
-
-        // $this->addToLog($logData);
-
     
 
          /////////////////////
@@ -186,7 +175,6 @@ class PhoneController extends Controller{
          LogModel::create([
              'accion' => 'eliminar',
              'tabla_afectada' => 'phones',
-             'detalle' => 'Se ha eliminado el móvil con ID ' . $id,
          ]);
  
          return redirect()->route('phones');

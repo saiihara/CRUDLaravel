@@ -22,12 +22,37 @@
     <!-- </div>
 @endif -->
 
-    <nav >
-      <a href='{{ route("principal") }}'>Inicio</a>
-      <a href='{{ route("añadir") }}'>Añadir móvil</a>
-      <a href='{{ route("tiendas.index") }}'>Tiendas</a>
-      <a href='{{ route("log.log") }}'>Ver logs</a>
+
+
+<section class="menu-section">
+    <nav>
+        <a href='{{ route("principal") }}' class="menu-item">Inicio</a>
+        <a href='{{ route("tiendas.index") }}' class="menu-item">Tiendas</a>
+
+        @if (session('role') && (session('role') === 'administrador' || session('role') === 'editor'))
+            <a href='{{ route("añadir") }}' class="menu-item">Añadir móviles</a>
+        @endif
+
+        @if (session('role') && (session('role') === 'administrador'))
+            <a href='{{ route("log.log") }}' class="menu-item">Ver logs</a>
+        @endif
     </nav>
+
+    <!-- Display logout or login links -->
+    @if (session()->has('name'))
+        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="fa-solid fa-sign-out" style="color: white"></i>
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    @else
+        <a href="{{ route('login') }}">
+            <i class="fa-solid fa-user" style="color: white"></i>
+        </a>
+    @endif
+</section>
+
 
     <h2 style="margin-left: 30px;">Móviles</h2>
 
@@ -52,7 +77,10 @@
               <th>Lanzamiento</th>
               <th>Pantalla</th>
               <th>Precio</th>
-              <th>Acciones</th> 
+              @if (session('role') && (session('role') === 'administrador' || session('role') === 'Editor'))
+                    <th>Acciones</th>
+              @endif
+
             </tr>
           </thead>
           <tbody>
@@ -69,16 +97,20 @@
         <td>{{ $phone->lanzamiento }}</td>
         <td>{{ $phone->pantalla }}</td>
         <td>{{ $phone->precio }}</td>
-        <td>
-            {{-- Enlace para editar --}}
-            <a class="editar" href="{{ route('editar', $phone->id) }}">Editar</a>
-            {{-- Formulario para eliminar con confirmación --}}
-            <form action="{{ route('eliminar', $phone->id) }}" method="POST" style="display: inline;">
-                @csrf
-                @method('DELETE')
-                <button class="eliminar" type="submit" onclick="return confirm('¿Estás seguro de que quiere borrar este log?')">Eliminar</button>
-            </form>
-        </td>
+
+        @if (session('role') && (session('role') === 'administrador' || session('role') === 'Editor'))
+            <td>
+                {{-- Enlace para editar --}}
+                <a class="editar" href="{{ route('editar', $phone->id) }}">Editar</a>
+                {{-- Formulario para eliminar con confirmación --}}
+                <form action="{{ route('eliminar', $phone->id) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button class="eliminar" type="submit" onclick="return confirm('¿Estás seguro de que quiere borrar este log?')">Eliminar</button>
+                </form>
+            </td>
+        @endif
+        
     </tr>
 @endforeach
 

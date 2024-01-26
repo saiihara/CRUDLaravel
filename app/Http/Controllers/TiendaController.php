@@ -5,34 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Tienda;
 use App\Http\Controllers\LogController;
+use Illuminate\Support\Facades\Session;
 
 use App\Models\Log;
 
 class TiendaController extends Controller
 {
 
-  /**
-     * Instancia la clase Log 
-     *
-     * 
-     */
-
-    private $logController;
-
-    public function __construct(LogController $logController)
-    {
-        $this->logController = $logController;
-    }
-
-    public function actualizarLog(Request $request, $id)
-    {
-        // Tu lógica de actualización...
-
-        // Registrar en el log
-        $this->logController->store('actualizar', 'tiendas');
-
-        return redirect()->route('tiendas.index');
-    }
 
     /**
      * Muestra la lista de todas las tiendas.
@@ -78,8 +57,6 @@ class TiendaController extends Controller
     //busca una tienda por su id
     // ( si no encuentra la tienda será null)
     $tienda = Tienda::find($id);
-    
-    // \Log::info('Tienda: ' . print_r($tienda, true));
     
 
     //si no existe la tienda

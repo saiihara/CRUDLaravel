@@ -22,7 +22,7 @@
         <select name="role" required>
             <option value="administrador" {{ $user->role === 'administrador' ? 'selected' : '' }}>Administrador</option>
             <option value="Editor" {{ $user->role === 'Editor' ? 'selected' : '' }}>Editor</option>
-            <option value="El que añade" {{ $user->role === 'El que añade' ? 'selected' : '' }}>Añadidor</option>
+            <option value="El que añade" {{ $user->role === 'Añadidor' ? 'selected' : '' }}>Añadidor</option>
             <option value="Invitado" {{ $user->role === 'Invitado' ? 'selected' : '' }}>Invitado</option>
         </select>
 

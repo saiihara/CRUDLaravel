@@ -163,6 +163,8 @@ footer {
 .menu-section {
   background-color: #333;
   overflow: hidden;
+  display:flex;
+  align-items: center;
 }
 
 .menu-item {
@@ -226,4 +228,38 @@ p {
 
 .delete-button:hover {
   background-color: #390909;
+}
+
+
+.tips{
+  background-color: rgb(244, 198, 239);
+
+  padding: 20px;
+  width: 500px;
+  margin: 0 auto;
+  border-radius: 20px;
+}
+
+.tips p:first-child{
+  background-color: rgb(66, 31, 63);
+  color:white;
+  padding:10px;
+  border-radius: 10px;
+}
+
+.tips p:first-child a{
+  color: pink;
+}
+
+.loginresform{
+  width:500px;
+  margin: 0 auto;
+
+  margin-bottom: 20px;
+}
+
+.logintitle, .titleres{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

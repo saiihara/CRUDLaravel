@@ -8,35 +8,35 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class RegisterController extends Controller
 {
     /**
-     * Show the registration form.
+     * Muestra el formulario de registro
      *
      * @return \Illuminate\View\View
      */
-    public function showRegistrationForm()
-    {
+
+    public function showRegistrationForm(){
         return view('auth.register');
     }
 
     /**
-     * Handle user registration.
+     * Maneja el registro del usuario
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function register(Request $request)
-    {
-        // Create a new user
+
+    public function register(Request $request){
+
         $user = User::create([
-            'email' => $request->name, 
+            'name' => $request->name, 
             'email' => $request->email,
             'password' => Hash::make('password'), 
         ]);
 
-        // Redirect to the login screen
         return redirect()->route('login')->with('success', 'Registration successful! Please log in.');
     }
 }
